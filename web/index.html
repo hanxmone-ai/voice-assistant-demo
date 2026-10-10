@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="A hands-free voice assistant in the browser: it hears when you stop talking, answers sentence by sentence while the model is still writing, and stops when you talk over it." />
+    <meta name="color-scheme" content="light dark" />
+    <title>Voice Assistant Demo</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='16' fill='%230f766e'/%3E%3Crect x='12.5' y='7' width='7' height='12' rx='3.5' fill='white'/%3E%3Cpath d='M9.5 15.5a6.5 6.5 0 0 0 13 0M16 22v3' stroke='white' stroke-width='2.2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E" />
+    <script type="module" src="./src/main.ts"></script>
+  </head>
+  <body>
+    <div class="app">
+      <header>
+        <div class="brand">
+          <span class="logo" aria-hidden="true"></span>
+          <h1>Voice Assistant</h1>
+          <span id="status" class="status" data-kind="pending" aria-live="polite">Connecting…</span>
+        </div>
+        <nav>
+          <button type="button" class="ghost" id="new-chat">New chat</button>
+          <button type="button" class="ghost" id="open-settings" aria-haspopup="dialog">Settings</button>
+          <a class="ghost" href="https://github.com/hanxmone-ai/voice-assistant-demo" target="_blank" rel="noopener">Code</a>
+        </nav>
+      </header>
+
+      <section class="stage" aria-label="Voice">
+        <button type="button" id="orb" class="orb" data-state="idle" aria-pressed="false" aria-label="Start talking">
+          <svg class="icon mic" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="9" y="3" width="6" height="11" rx="3" />
+            <path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21" />
+          </svg>
+          <span class="icon bars" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        </button>
+        <p id="state-label" class="state-label" aria-live="polite">Tap to talk</p>
+        <p id="hint" class="hint"></p>
+        <p id="caption" class="caption" aria-live="polite"></p>
+        <p id="notice" class="notice" role="alert" hidden></p>
+      </section>
+
+      <main id="turns" class="turns" aria-label="Conversation"></main>
+
+      <form id="composer" class="composer">
+        <label class="visually-hidden" for="input">Or type a question</label>
+        <input id="input" type="text" placeholder="Or type a question…" autocomplete="off" enterkeyhint="send" />
+        <button id="send" type="submit">Send</button>
+      </form>
+    </div>
+
+    <dialog id="settings" aria-labelledby="settings-title">
+      <form id="settings-form" method="dialog">
+        <h2 id="settings-title">Settings</h2>
+        <fieldset>
+          <legend>Model, speech recognition and voice</legend>
+          <label><input type="radio" name="mode" value="auto" /> Automatic: this site's server if there is one, else the demo</label>
+          <label><input type="radio" name="mode" value="demo" /> Demo: a mock model and your browser's speech</label>
+          <label><input type="radio" name="mode" value="server" /> Server at this address:</label>
+          <input type="url" name="serverUrl" placeholder="https://voice.example.com" />
+        </fieldset>
+        <label class="row">
+          Language
+          <select name="lang">
+            <option value="en">English</option>
+            <option value="zh">中文</option>
+          </select>
+        </label>
+        <label class="check"><input type="checkbox" name="speak" /> Read answers aloud</label>
+        <label class="check"><input type="checkbox" name="headphones" /> I'm wearing headphones (interrupting needs less effort)</label>
+        <p class="muted small">Now using: <span id="engine-label"></span></p>
+        <p class="muted small">Changing these starts a new conversation.</p>
+        <div class="dialog-actions">
+          <button type="submit" value="cancel" class="ghost">Cancel</button>
+          <button type="submit" value="save">Save</button>
+        </div>
+      </form>
+    </dialog>
+  </body>
+</html>

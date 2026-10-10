@@ -1,0 +1,28 @@
+{
+  "name": "voice-assistant-demo",
+  "version": "0.1.0",
+  "description": "A hands-free voice assistant: in-browser voice activity detection, streaming LLM answers spoken sentence by sentence, and barge-in. Node relay for OpenAI-compatible speech-to-text, chat and text-to-speech.",
+  "license": "MIT",
+  "author": "Yihan Qiu <hanxmone@gmail.com>",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "dev": "node --watch --experimental-strip-types server/index.ts",
+    "dev:web": "vite",
+    "build": "npm run build:web && npm run build:server",
+    "build:web": "vite build",
+    "build:server": "tsc -p tsconfig.server.json",
+    "start": "node build/server/server/index.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.server.json --noEmit",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "@types/node": "^22.19.0",
+    "typescript": "~5.9.3",
+    "vite": "^8.0.0",
+    "vitest": "^5.0.0"
+  }
+}
